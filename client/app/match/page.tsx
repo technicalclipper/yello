@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import gsap from "gsap";
 import { Navbar } from "../../components/Navbar";
 import { Loader } from "../../components/Loader";
+import TrueFocus from "@/components/TrueFocus";
+import {GridScan} from "@/components/GridScan";
 
 export default function MatchPage() {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -40,38 +42,56 @@ export default function MatchPage() {
   }, []);
 
   return (
-    <div
-      ref={containerRef}
-      className="min-h-screen bg-gradient-to-b from-black via-zinc-950 to-black text-zinc-100"
-    >
+  <div
+    ref={containerRef}
+    className="relative min-h-screen overflow-hidden bg-black text-zinc-100"
+  >
+    {/* 🔮 Animated background */}
+    <div className="pointer-events-none absolute inset-0 z-0">
+      <GridScan
+        sensitivity={0.55}
+        lineThickness={1}
+        linesColor="#fdda28"
+        gridScale={0.1}
+        scanColor="#f3db42"
+        scanOpacity={0.4}
+        enablePost
+        bloomIntensity={0.6}
+        chromaticAberration={0.002}
+        noiseIntensity={0.01}
+      />
+    </div>
+
+    {/* Foreground content */}
+    <div className="relative z-10">
       <Navbar />
+
       <main className="mx-auto flex min-h-screen max-w-3xl flex-col items-center justify-center px-4 pt-20 pb-16 sm:px-6">
         <div className="flex flex-col items-center gap-8 text-center">
-          <Loader />
+       {/*}  <Loader />*/}
+
           <div className="match-copy space-y-4">
-            <h1 className="text-lg font-semibold tracking-tight text-zinc-50 sm:text-xl">
-              Looking for a real person…
-            </h1>
+            {/* ✨ TrueFocus text */}
+            <TrueFocus
+              sentence="Finding match"
+              manualMode={false}
+              blurAmount={2.5}
+              borderColor="#fdda28"
+              animationDuration={0.5}
+              pauseBetweenAnimations={0.5}
+            />
+
             <p className="max-w-md text-sm leading-relaxed text-zinc-400">
-              Good conversations take a moment. We&apos;re pairing you with
-              someone whose pace and presence feel like yours.
+              Good conversations take a moment.
             </p>
-            <div className="flex flex-col items-center gap-1 text-xs text-zinc-500">
-              <p>
-                Estimated wait:{" "}
-                <span className="text-amber-100">
-                  {Math.min(3, 1 + Math.floor(seconds / 2))}–
-                  {Math.min(6, 3 + Math.floor(seconds / 2))} seconds
-                </span>
-              </p>
-              <p className="text-[0.65rem] uppercase tracking-[0.2em] text-zinc-600">
-                Keeping the line quiet while we find your match
-              </p>
-            </div>
+
+            
           </div>
         </div>
       </main>
     </div>
-  );
+  </div>
+);
+
 }
 

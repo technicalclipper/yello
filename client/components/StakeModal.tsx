@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { useRouter } from "next/navigation";
 import { Card } from "./Card";
 import { PrimaryButton } from "./PrimaryButton";
+import Counter from './Counter'; 
 
 type StakeModalProps = {
   open: boolean;
@@ -15,36 +16,49 @@ export function StakeModal({ open, onClose }: StakeModalProps) {
   const router = useRouter();
   const backdropRef = React.useRef<HTMLDivElement | null>(null);
   const cardRef = React.useRef<HTMLDivElement | null>(null);
+  
+  /**
+   * 10000 = 1.0000 ETH
+   * 5     = 0.0005 ETH
+   * 10    = 0.0010 ETH
+   */
+  const [rawAmount, setRawAmount] = React.useState(5);
+
+  const displayWhole = Math.floor(rawAmount / 10000);
+  const displayDecimal = rawAmount % 10000;
 
   React.useEffect(() => {
     if (!open) return;
-    const backdrop = backdropRef.current;
-    const card = cardRef.current;
-    if (!backdrop || !card) return;
+    
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        backdropRef.current,
+        { opacity: 0 },
+        { opacity: 1, duration: 0.4, ease: "power2.out" }
+      );
 
-    gsap.fromTo(
-      backdrop,
-      { opacity: 0 },
-      { opacity: 1, duration: 0.4, ease: "power2.out" }
-    );
+      gsap.fromTo(
+        cardRef.current,
+        { opacity: 0, y: 20, scale: 0.95 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.5,
+          ease: "power2.out",
+          delay: 0.1,
+        }
+      );
+    });
 
-    gsap.fromTo(
-      card,
-      { opacity: 0, y: 20, scale: 0.95 },
-      {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 0.5,
-        ease: "power2.out",
-        delay: 0.05,
-      }
-    );
+    return () => ctx.revert();
   }, [open]);
 
   if (!open) return null;
 
   const enterSession = () => {
+    const finalAmount = rawAmount / 10000;
+    console.log("Staking:", finalAmount.toFixed(4), "ETH");
     onClose();
     router.push("/match");
   };
@@ -52,61 +66,90 @@ export function StakeModal({ open, onClose }: StakeModalProps) {
   return (
     <div
       ref={backdropRef}
-      className="fixed inset-0 z-40 flex items-center justify-center bg-black/70 backdrop-blur-md"
+      className="fixed inset-0 z-40 flex items-center justify-center bg-black/80 backdrop-blur-xl"
       onClick={onClose}
     >
-      <div
-        ref={cardRef}
-        className="w-full max-w-md px-4 sm:px-0"
+      <div 
+        ref={cardRef} 
+        className="w-full max-w-sm px-4" 
         onClick={(e) => e.stopPropagation()}
       >
-        <Card className="space-y-6">
-          <div className="space-y-2">
-            <p className="text-xs font-medium uppercase tracking-[0.2em] text-amber-200/70">
-              Session Commitment
+        <Card className="border-zinc-800/50 bg-zinc-950/50 p-8 shadow-2xl">
+          <div className="text-center space-y-2 mb-10">
+            <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-amber-500/80">
+              Commitment
             </p>
-            <h2 className="text-xl font-semibold text-zinc-50">
-              Anchor your time with intent.
-            </h2>
-            <p className="text-sm text-zinc-400">
-              Choose an amount that feels meaningful, not stressful. Your time
-              should serve the conversation, not the other way around.
-            </p>
+            <h2 className="text-lg font-light text-zinc-300">Set your stake</h2>
           </div>
 
-          <div className="space-y-3">
-            <label className="block text-sm text-zinc-300">
-              Amount to commit
-              <div className="mt-2 flex items-center gap-2 rounded-2xl border border-zinc-700 bg-black/40 px-3 py-2.5">
-                <input
-                  type="text"
-                  placeholder="0.05"
-                  className="flex-1 bg-transparent text-sm text-zinc-100 placeholder:text-zinc-600 focus:outline-none"
-                />
-                <span className="rounded-full border border-zinc-600 px-2 py-0.5 text-[0.65rem] uppercase tracking-[0.18em] text-zinc-300">
-                  ETH
-                </span>
-              </div>
-            </label>
-            <p className="text-xs text-zinc-500">
-              Unused time is returned automatically. You keep ownership of your
-              attention.
-            </p>
+          <div className="relative flex flex-col items-center justify-center">
+            <div className="flex items-baseline justify-center select-none cursor-default">
+              {/* Whole Number */}
+              <Counter
+                value={displayWhole}
+                places={[1]}
+                fontSize={64}
+                textColor="#ffffff"
+                fontWeight={900}
+                gap={0}
+                padding={0}
+              />
+              
+              <span className="text-4xl font-black text-white px-0.5 translate-y-[-2px]">.</span>
+
+              {/* Decimal Numbers (4 places: 0000) */}
+              <Counter
+                value={displayDecimal}
+                places={[1000, 100, 10, 1]} 
+                fontSize={64}
+                textColor="#ffffff"
+                fontWeight={900}
+                gap={0}
+                padding={0}
+                digitPlaceholder="0"
+              />
+            </div>
+            
+            <span className="mt-3 text-[10px] font-black tracking-[0.5em] text-zinc-600 uppercase">
+              ETH
+            </span>
+
+            <div className="mt-12 flex items-center gap-10">
+              <button 
+                onClick={() => setRawAmount(prev => Math.max(0, prev - 5))}
+                className="group flex flex-col items-center gap-2 transition-transform active:scale-90"
+              >
+                <div className="w-10 h-10 rounded-full border border-zinc-800 flex items-center justify-center text-zinc-500 group-hover:border-zinc-500 group-hover:text-white transition-all">
+                  <span className="text-xl font-light">−</span>
+                </div>
+                <span className="text-[9px] text-zinc-600 font-medium tabular-nums">0.0005</span>
+              </button>
+
+              <button 
+                onClick={() => setRawAmount(prev => prev + 5)}
+                className="group flex flex-col items-center gap-2 transition-transform active:scale-90"
+              >
+                <div className="w-10 h-10 rounded-full border border-zinc-800 flex items-center justify-center text-zinc-500 group-hover:border-zinc-500 group-hover:text-white transition-all">
+                  <span className="text-xl font-light">+</span>
+                </div>
+                <span className="text-[9px] text-zinc-600 font-medium tabular-nums">0.0005</span>
+              </button>
+            </div>
           </div>
 
-          <div className="flex items-center justify-between gap-3 pt-1">
-            <button
-              type="button"
-              onClick={onClose}
-              className="text-xs font-medium text-zinc-500 transition-colors hover:text-zinc-300"
+          <div className="mt-12 flex flex-col gap-4">
+            <PrimaryButton onClick={enterSession} className="w-full py-6 text-sm uppercase tracking-widest">
+              Confirm Stake
+            </PrimaryButton>
+            <button 
+              onClick={onClose} 
+              className="text-[10px] uppercase tracking-widest text-zinc-600 hover:text-zinc-400 transition-colors"
             >
-              Not now
+              Cancel
             </button>
-            <PrimaryButton onClick={enterSession}>Enter Session</PrimaryButton>
           </div>
         </Card>
       </div>
     </div>
   );
 }
-

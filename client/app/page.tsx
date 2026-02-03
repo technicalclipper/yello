@@ -3,53 +3,62 @@
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import gsap from "gsap";
+import BlobCursor from "@/components/BlobCursor";
 
 export default function SplashPage() {
   const router = useRouter();
-  const containerRef = useRef<HTMLDivElement | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (!videoRef.current) return;
 
-    const tl = gsap.timeline({
-      defaults: { ease: "power2.out" },
-      onComplete: () => {
-        router.push("/landing");
-      },
-    });
-
-    tl.fromTo(
-      ".yello-logo",
-      { opacity: 0, scale: 0.95 },
-      { opacity: 1, scale: 1, duration: 1.1 }
+    gsap.fromTo(
+      videoRef.current,
+      { opacity: 0, scale: 0.98 },
+      { opacity: 1, scale: 1, duration: 1.2, ease: "power2.out" }
     );
 
-    return () => {
-      tl.kill();
-    };
+    const timeout = setTimeout(() => {
+      router.push("/landing");
+    }, 4000);
+
+    return () => clearTimeout(timeout);
   }, [router]);
 
   return (
-    <div
-      ref={containerRef}
-      className="flex min-h-screen items-center justify-center bg-gradient-to-b from-black via-zinc-950 to-black text-zinc-100"
-    >
-      <div className="relative flex flex-col items-center gap-4">
-        <div className="pointer-events-none absolute -inset-32 opacity-40 blur-3xl">
-          <div className="h-full w-full bg-[radial-gradient(circle_at_top,_rgba(250,224,167,0.18),_transparent_55%),radial-gradient(circle_at_bottom,_rgba(24,24,27,0.9),_transparent_60%)]" />
-        </div>
-        <div className="relative yello-logo flex flex-col items-center">
-          <span className="mb-3 text-xs font-medium uppercase tracking-[0.3em] text-amber-200/70">
-            Web3 Video Conversations
-          </span>
-          <h1 className="text-5xl font-semibold tracking-tight text-amber-100 sm:text-6xl">
-            Yello!
-          </h1>
-          <p className="mt-4 max-w-sm text-center text-sm text-zinc-400">
-            A calmer way to meet real people. No feeds. No noise. Just presence.
-          </p>
-        </div>
+    <>
+      {/* VIDEO LAYER */}
+      <div className="fixed inset-0 bg-black z-0">
+        <video
+          ref={videoRef}
+          src="/logo-intro.mp4"
+          autoPlay
+          muted
+          playsInline
+          className="h-full w-full object-contain"
+        />
       </div>
-    </div>
+
+      {/* CURSOR LAYER (TOP MOST) */}
+      <div className="fixed inset-0 z-[9999] pointer-events-none">
+        <BlobCursor
+          blobType="circle"
+          fillColor="#f3db42"
+          trailCount={3}
+          sizes={[40,80,55]}
+          innerSizes={[12,20,15]}
+          innerColor="#f0dd5f"
+          opacities={[0.6, 0.6, 0.6]}
+          shadowColor="rgba(0,0,0,0.6)"
+          shadowBlur={20}
+          shadowOffsetX={0}
+          shadowOffsetY={10}
+          filterStdDeviation={30}
+          useFilter={true}
+          fastDuration={0.1}
+          slowDuration={0.5}
+        />
+      </div>
+    </>
   );
 }
