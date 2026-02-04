@@ -31,7 +31,7 @@ export default function SplashPage() {
       <div className="fixed inset-0 bg-black z-0">
         <video
           ref={videoRef}
-          src="/logo-intro.mp4"
+          src="/yello_logo_video.mp4"
           autoPlay
           muted
           playsInline

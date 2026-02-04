@@ -8,6 +8,7 @@ import { Card } from "../../components/Card";
 import { PrimaryButton } from "../../components/PrimaryButton";
 import CountUp from "@/components/CountUp";
 import SplitText from "@/components/SplitText";
+import TargetCursor from "@/components/TargetCursor";
 
 const PROMPTS = [
   "What surprised you about this conversation?",
@@ -62,6 +63,12 @@ export default function SummaryPage() {
       ref={containerRef}
       className="min-h-screen bg-gradient-to-b from-black via-zinc-950 to-black text-zinc-100"
     >
+      <TargetCursor
+      spinDuration={3}
+      hoverDuration={0.15}
+      parallaxOn
+      hideDefaultCursor
+    />
       <Navbar />
 
       <main className="mx-auto flex min-h-screen max-w-3xl flex-col items-center justify-center px-4 pt-20 pb-16">
@@ -159,7 +166,7 @@ export default function SummaryPage() {
             </div>
 
             <div className="flex justify-center pt-2">
-              <PrimaryButton onClick={() => router.push("/landing")}>
+              <PrimaryButton onClick={() => router.push("/landing")} className="cursor-target">
                 Return Home
               </PrimaryButton>
             </div>

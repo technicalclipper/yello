@@ -6,6 +6,7 @@ import gsap from "gsap";
 import { Mic, MicOff, Video, VideoOff, Send } from "lucide-react";
 import { Navbar } from "../../components/Navbar";
 import { PrimaryButton } from "../../components/PrimaryButton";
+import TargetCursor from "@/components/TargetCursor";
 
 function formatTime(totalSeconds: number) {
   const minutes = Math.floor(totalSeconds / 60)
@@ -105,6 +106,12 @@ export default function CallPage() {
       ref={containerRef}
       className="min-h-screen bg-gradient-to-b from-black via-zinc-950 to-black text-zinc-100"
     >
+      <TargetCursor
+      spinDuration={3}
+      hoverDuration={0.15}
+      parallaxOn
+      hideDefaultCursor
+    />
       <Navbar sessionTime={formatTime(seconds)} balance={balance} />
 
       {/* Main Content */}
@@ -144,7 +151,7 @@ export default function CallPage() {
                     <button
                       type="button"
                       onClick={() => setMicOn((v) => !v)}
-                      className={`flex h-10 w-10 items-center justify-center rounded-full border transition-all duration-300 ${
+                      className={`cursor-target flex h-10 w-10 items-center justify-center rounded-full border transition-all duration-300 ${
                         micOn
                           ? "border-zinc-800 bg-zinc-900/70 text-zinc-200 hover:bg-zinc-800 hover:border-amber-300/40"
                           : "border-rose-500/60 bg-rose-500/20 text-rose-100 hover:bg-rose-500/30"
@@ -157,7 +164,7 @@ export default function CallPage() {
                     <button
                       type="button"
                       onClick={() => setCameraOn((v) => !v)}
-                      className={`flex h-10 w-10 items-center justify-center rounded-full border transition-all duration-300 ${
+                      className={`cursor-target flex h-10 w-10 items-center justify-center rounded-full border transition-all duration-300 ${
                         cameraOn
                           ? "border-zinc-800 bg-zinc-900/70 text-zinc-200 hover:bg-zinc-800 hover:border-amber-300/40"
                           : "border-amber-500/60 bg-amber-500/15 text-amber-100 hover:bg-amber-500/25"
@@ -176,7 +183,7 @@ export default function CallPage() {
                     </p>
                     <PrimaryButton
                       onClick={endSession}
-                      className="fade-in-button bg-rose-500/20 text-rose-100 hover:bg-rose-500/30 hover:shadow-[0_0_30px_rgba(244,63,94,0.45)] text-xs sm:text-sm"
+                      className="cursor-target fade-in-button bg-rose-500/20 text-rose-100 hover:bg-rose-500/30 hover:shadow-[0_0_30px_rgba(244,63,94,0.45)] text-xs sm:text-sm"
                     >
                       End Session
                     </PrimaryButton>
@@ -232,7 +239,7 @@ export default function CallPage() {
                   />
                   <button
                     onClick={handleSendMessage}
-                    className="flex h-8 w-8 items-center justify-center rounded-full border border-zinc-800 bg-zinc-900/70 text-zinc-400 hover:text-amber-100 hover:border-amber-300/40 hover:bg-zinc-800 transition-all duration-300"
+                    className="cursor-target flex h-8 w-8 items-center justify-center rounded-full border border-zinc-800 bg-zinc-900/70 text-zinc-400 hover:text-amber-100 hover:border-amber-300/40 hover:bg-zinc-800 transition-all duration-300"
                     title="Send message"
                   >
                     <Send className="w-4 h-4" />

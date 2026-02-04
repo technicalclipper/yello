@@ -6,31 +6,32 @@ import { Navbar } from "../../components/Navbar";
 import { PrimaryButton } from "../../components/PrimaryButton";
 import { StakeModal } from "../../components/StakeModal";
 import { Zap, Video, Users, TrendingUp } from "lucide-react";
+import TargetCursor from "@/components/TargetCursor";
 
 const FEATURES = [
   {
     icon: Video,
-    title: "Anonymous Video Chats",
+    title: "Anonymous Video",
     description:
-      "No profiles, no permanence. Just real conversations between real humans where your presence matters, not your history.",
+      "No profiles. No memory. Just two people showing up in the same moment.",
   },
   {
     icon: Zap,
-    title: "Time-Metered & Reversible",
+    title: "Time With Weight",
     description:
-      "Every session has clear boundaries. You see exactly how your time is valued before you start, with full refunds available.",
+      "Sessions feel intentional. You see the value of time before it starts.",
   },
   {
     icon: Users,
-    title: "Matched by Presence",
+    title: "Matched Gently",
     description:
-      "Get paired based on what you bring to the conversation right now—not your profile, followers, or past behavior.",
+      "Not by followers or history — just presence, now.",
   },
   {
     icon: TrendingUp,
-    title: "Earn Real Trust",
+    title: "Trust Emerges",
     description:
-      "Build genuine reputation through consistent, authentic interactions. Your presence is your signal.",
+      "Consistency leaves traces. Quiet signals others can feel.",
   },
 ];
 
@@ -39,161 +40,181 @@ export default function LandingPage() {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  useEffect(() => {
     if (!containerRef.current) return;
 
     const ctx = gsap.context(() => {
-      // Hero headline animation
-      gsap.fromTo(
-        ".hero-headline",
-        { opacity: 0, y: 18 },
-        { opacity: 1, y: 0, duration: 0.9, ease: "power2.out" }
-      );
-
-      // Hero subline animation
-      gsap.fromTo(
-        ".hero-subline",
-        { opacity: 0, y: 18 },
-        { opacity: 1, y: 0, duration: 0.9, delay: 0.1, ease: "power2.out" }
-      );
-
-      // Button animation
-      gsap.fromTo(
-        ".hero-button",
-        { opacity: 0, y: 18 },
-        { opacity: 1, y: 0, duration: 0.9, delay: 0.2, ease: "power2.out" }
-      );
-
-      // Feature cards animation
-      gsap.fromTo(
-        ".feature-card",
-        { opacity: 0, y: 20 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.9,
-          delay: 0.3,
-          ease: "power2.out",
-          stagger: 0.15,
-        }
-      );
+      gsap.from(".reveal", {
+        opacity: 0,
+        y: 24,
+        duration: 1,
+        ease: "power2.out",
+        stagger: 0.15,
+      });
     }, containerRef);
 
     return () => ctx.revert();
   }, []);
 
   return (
+    
     <div
       ref={containerRef}
       className="min-h-screen bg-gradient-to-b from-black via-zinc-950 to-black text-zinc-100"
     >
+       {/* GLOBAL CURSOR — MUST BE HERE */}
+    <TargetCursor
+      spinDuration={3}
+      hoverDuration={0.15}
+      parallaxOn
+      hideDefaultCursor
+    />
       <Navbar />
 
-      {/* Hero Section */}
-      <main className="mx-auto max-w-6xl px-4 pt-24 pb-24 sm:px-6 lg:px-8">
-        <section className="flex flex-col items-center justify-center text-center">
-          <div className="max-w-3xl space-y-8">
-            {/* Main Headline */}
-            <div className="hero-headline space-y-2">
-              <h1 className="text-5xl font-bold tracking-tight text-zinc-50 sm:text-6xl lg:text-7xl">
-                Talk. Earn{" "}
-                <span className="bg-gradient-to-r from-amber-300 via-amber-200 to-amber-100 bg-clip-text text-transparent">
-                  trust
-                </span>
-                . Pay less.
-              </h1>
-            </div>
+      <main className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
 
-            {/* Subline */}
-            <div className="hero-subline">
-              <p className="mx-auto max-w-2xl text-lg leading-relaxed text-zinc-400 sm:text-xl">
-                Yello creates space for conversations that feel like a deep
-                breath, not a notification. Anonymous video designed for real
-                humans to connect meaningfully.
-              </p>
-            </div>
+        {/* SECTION 1 — HERO */}
+        
+        <section className="relative min-h-screen flex flex-col items-center justify-center text-center overflow-hidden">
 
-            {/* CTA Button */}
-            <div className="hero-button flex justify-center pt-4">
-              <PrimaryButton
-                onClick={() => setStakeOpen(true)}
-                className="text-sm uppercase tracking-[0.22em] px-8 py-3"
-              >
-                Start Session Now
-              </PrimaryButton>
-            </div>
+  {/* Particles layer */}
+ 
 
-            {/* Trust Badge */}
-            <div className="flex justify-center pt-4">
-              <div className="inline-flex items-center gap-2 rounded-full border border-amber-300/30 bg-amber-300/5 px-4 py-2">
-                <span className="h-2 w-2 rounded-full bg-emerald-400" />
-                <span className="text-xs font-medium uppercase tracking-[0.22em] text-amber-200/70">
-                  Join thousands building real presence
-                </span>
-              </div>
-            </div>
-          </div>
-        </section>
+  {/* Content layer */}
+  <div className="relative z-10">
+    <h1 className="reveal text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight">
+      Talk. Earn{" "}
+      <span className="bg-gradient-to-r from-amber-300 via-amber-200 to-amber-100 bg-clip-text text-transparent">
+        trust
+      </span>
+      . Pay less.
+    </h1>
 
-        {/* Features Section */}
-        <section className="mt-32 space-y-16">
-          <div className="space-y-4 text-center">
-            <p className="text-xs font-medium uppercase tracking-[0.3em] text-amber-300/80">
-              Why Yello
-            </p>
-            <h2 className="text-3xl font-bold tracking-tight text-zinc-50 sm:text-4xl">
-              Built for Real Conversations
-            </h2>
-          </div>
+    <p className="reveal mt-6 max-w-xl mx-auto text-lg text-zinc-400 text-center">
+      Conversations that feel calm, intentional, and human.
+    </p>
 
-          {/* Features Grid */}
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {FEATURES.map((feature, index) => {
-              const Icon = feature.icon;
-              return (
-                <div
-                  key={index}
-                  className="feature-card group relative rounded-2xl border border-amber-300/20 bg-gradient-to-br from-amber-300/5 to-amber-300/2 p-6 hover:border-amber-300/40 hover:bg-amber-300/10 transition-all duration-300"
-                >
-                  {/* Icon */}
-                  <div className="mb-4 inline-block rounded-lg bg-amber-300/10 p-3 group-hover:bg-amber-300/20 transition-colors">
-                    <Icon className="h-6 w-6 text-amber-300" />
-                  </div>
+    <div className="reveal mt-10">
+      <PrimaryButton
+        onClick={() => setStakeOpen(true)}
+        className="cursor-target uppercase tracking-[0.25em]"
+      >
+        Start a session
+      </PrimaryButton>
+    </div>
 
-                  {/* Content */}
-                  <h3 className="mb-3 text-lg font-semibold text-zinc-50">
-                    {feature.title}
-                  </h3>
-                  <p className="text-sm leading-relaxed text-zinc-400">
-                    {feature.description}
-                  </p>
+   
+  </div>
 
-                  {/* Decorative glow */}
-                  <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br from-amber-300/0 to-amber-300/0 opacity-0 group-hover:opacity-100 group-hover:from-amber-300/5 group-hover:to-amber-300/2 transition-opacity duration-300" />
-                </div>
-              );
-            })}
-          </div>
-        </section>
+</section>
 
-        {/* CTA Section */}
-        <section className="mt-32 rounded-2xl border border-amber-300/20 bg-gradient-to-br from-amber-300/5 to-amber-300/2 p-12 text-center">
-          <h3 className="mb-4 text-2xl font-bold text-zinc-50">
-            Ready to connect with real humans?
-          </h3>
-          <p className="mx-auto mb-8 max-w-xl text-zinc-400">
-            Sessions are metered, reversible, and transparent. You always see
-            how your time is being valued.
+
+        
+
+        {/* SECTION — BADGES */}
+<section className="py-32">
+  <div className="text-center max-w-3xl mx-auto">
+    <p className="reveal text-xs uppercase tracking-[0.3em] text-amber-300/80">
+      Trust, over time
+    </p>
+
+    <h2 className="reveal mt-4 text-3xl font-bold text-zinc-50">
+      Badges appear as you keep showing up
+    </h2>
+
+    <p className="reveal mt-6 text-zinc-400 leading-relaxed">
+      Yello doesn’t score you.
+      <br />
+      It quietly observes how sessions unfold — duration, consistency,
+      completion — and lets trust emerge naturally.
+    </p>
+  </div>
+
+  {/* Badge Cards */}
+  <div className="reveal mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    {[
+      {
+        title: "New",
+        desc: "Every session begins here. No assumptions.",
+      },
+      {
+        title: "Regular",
+        desc: "You show up consistently and complete sessions.",
+      },
+      {
+        title: "Considerate",
+        desc: "Conversations tend to run longer, with fewer abrupt exits.",
+      },
+      {
+        title: "Trusted",
+        desc: "A steady history of meaningful, respectful sessions.",
+      },
+    ].map((badge) => (
+      <div
+        key={badge.title}
+        className="group relative rounded-2xl border border-amber-300/20 bg-gradient-to-br from-amber-300/5 to-amber-300/2 p-6 transition-all hover:border-amber-300/40"
+      >
+        <div className="mb-3 text-sm uppercase tracking-[0.25em] text-amber-300/80">
+          {badge.title}
+        </div>
+        <p className="text-sm leading-relaxed text-zinc-400">
+          {badge.desc}
+        </p>
+
+        {/* Soft glow */}
+        <div className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 bg-gradient-to-br from-amber-300/10 to-transparent transition-opacity" />
+      </div>
+    ))}
+  </div>
+
+  {/* Footer note */}
+  <p className="reveal mt-12 text-center text-xs tracking-wide text-zinc-500">
+    Badges evolve automatically based on real session behavior.
+  </p>
+</section>
+
+
+        {/* SECTION 6 — GLOBAL */}
+        <section className="py-32 text-center">
+          <h2 className="reveal text-3xl font-semibold">
+            From everywhere.
+          </h2>
+          <p className="reveal mt-6 text-zinc-400">
+            Different places. Different times.
+            <br />
+            The same quiet moment.
           </p>
-          <PrimaryButton
-            onClick={() => setStakeOpen(true)}
-            className="text-sm uppercase tracking-[0.22em]"
-          >
-            Start Your First Session
-          </PrimaryButton>
+        </section>
+
+        {/* SECTION 7 — TRANSPARENCY */}
+        <section className="py-32 text-center">
+          <h2 className="reveal text-3xl font-semibold">
+            Nothing hidden.
+          </h2>
+          <p className="reveal mt-6 max-w-xl mx-auto text-zinc-400">
+            You see the cost.
+            <br />
+            You end when you want.
+            <br />
+            You keep what’s unused.
+          </p>
+        </section>
+
+        {/* SECTION 8 — FINAL CTA */}
+        <section className="py-40 text-center">
+          <p className="reveal text-2xl text-zinc-300">
+            Start a session.
+            <br />
+            See how it feels.
+          </p>
+
+          <div className="reveal mt-10">
+            <PrimaryButton
+              onClick={() => setStakeOpen(true)}
+              className="cursor-target uppercase tracking-[0.25em]"
+            >
+              Begin now
+            </PrimaryButton>
+          </div>
         </section>
       </main>
 
@@ -201,4 +222,3 @@ export default function LandingPage() {
     </div>
   );
 }
-

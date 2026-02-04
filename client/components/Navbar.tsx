@@ -9,7 +9,7 @@ import gsap from "gsap";
 
 import { OutlineButton } from "./OutlineButton";
 import { Sheet, SheetContent, SheetTrigger } from "./sheet";
-import { ProfileBadgePanel } from "@/components/ProfileBadgePanel";
+import  ProfileBadgePanel  from "@/components/ProfileBadgePanel";
 
 export type NavbarProps = {
   sessionTime?: string;
@@ -74,19 +74,19 @@ export function Navbar({ sessionTime, balance }: NavbarProps) {
               <SheetTrigger asChild>
                 <button
                   ref={avatarRef}
-                  className="relative w-10 h-10 rounded-full bg-gradient-to-br from-amber-300/30 to-amber-200/20 border border-amber-300/40 flex items-center justify-center"
+                  className="cursor-target relative w-10 h-10 rounded-full bg-gradient-to-br from-amber-300/30 to-amber-200/20 border border-amber-300/40 flex items-center justify-center"
                 >
                   <User className="w-5 h-5 text-amber-200" />
                   <div className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-green-400 border border-black" />
                 </button>
               </SheetTrigger>
 
-              <SheetContent side="right" className="p-0">
+              <SheetContent className="p-0">
                 <ProfileBadgePanel />
               </SheetContent>
             </Sheet>
 
-            <OutlineButton className="text-xs uppercase tracking-[0.22em] text-zinc-100/90 hover:text-amber-100">
+            <OutlineButton className="cursor-target text-xs uppercase tracking-[0.22em] text-zinc-100/90 hover:text-amber-100">
               Connect Wallet
             </OutlineButton>
           </div>

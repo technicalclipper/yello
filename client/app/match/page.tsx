@@ -7,6 +7,7 @@ import { Navbar } from "../../components/Navbar";
 import { Loader } from "../../components/Loader";
 import TrueFocus from "@/components/TrueFocus";
 import {GridScan} from "@/components/GridScan";
+import TargetCursor from "@/components/TargetCursor";
 
 export default function MatchPage() {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -68,6 +69,12 @@ export default function MatchPage() {
 
     {/* Foreground content */}
     <div className="relative z-10">
+      <TargetCursor
+            spinDuration={3}
+            hoverDuration={0.15}
+            parallaxOn
+            hideDefaultCursor
+          />
       <Navbar />
 
       <main className="mx-auto flex min-h-screen max-w-3xl flex-col items-center justify-center px-4 pt-20 pb-16 sm:px-6">
@@ -91,7 +98,7 @@ export default function MatchPage() {
             <div className="mt-4">
               <button
                 onClick={handleCancel}
-                className="text-[10px] uppercase tracking-widest text-amber-100 hover:text-amber-200 transition-colors"
+                className="cursor-target text-[10px] uppercase tracking-widest text-amber-100 hover:text-amber-200 transition-colors"
               >
                 Cancel
               </button>

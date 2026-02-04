@@ -115,9 +115,9 @@ export function StakeModal({ open, onClose }: StakeModalProps) {
             </span>
 
             <div className="mt-12 flex items-center gap-10">
-              <button 
+              <button
                 onClick={() => setRawAmount(prev => Math.max(0, prev - 5))}
-                className="group flex flex-col items-center gap-2 transition-transform active:scale-90"
+                className="cursor-target group flex flex-col items-center gap-2 transition-transform active:scale-90"
               >
                 <div className="w-10 h-10 rounded-full border border-zinc-800 flex items-center justify-center text-zinc-500 group-hover:border-zinc-500 group-hover:text-white transition-all">
                   <span className="text-xl font-light">−</span>
@@ -125,9 +125,9 @@ export function StakeModal({ open, onClose }: StakeModalProps) {
                 <span className="text-[9px] text-zinc-600 font-medium tabular-nums">0.0005</span>
               </button>
 
-              <button 
+              <button
                 onClick={() => setRawAmount(prev => prev + 5)}
-                className="group flex flex-col items-center gap-2 transition-transform active:scale-90"
+                className="cursor-target group flex flex-col items-center gap-2 transition-transform active:scale-90"
               >
                 <div className="w-10 h-10 rounded-full border border-zinc-800 flex items-center justify-center text-zinc-500 group-hover:border-zinc-500 group-hover:text-white transition-all">
                   <span className="text-xl font-light">+</span>
@@ -138,12 +138,12 @@ export function StakeModal({ open, onClose }: StakeModalProps) {
           </div>
 
           <div className="mt-12 flex flex-col gap-4">
-            <PrimaryButton onClick={enterSession} className="w-full py-6 text-sm uppercase tracking-widest">
+            <PrimaryButton onClick={enterSession} className="cursor-target w-full py-6 text-sm uppercase tracking-widest">
               Confirm Stake
             </PrimaryButton>
-            <button 
-              onClick={onClose} 
-              className="text-[10px] uppercase tracking-widest text-zinc-600 hover:text-zinc-400 transition-colors"
+            <button
+              onClick={onClose}
+              className="cursor-target text-[10px] uppercase tracking-widest text-zinc-600 hover:text-zinc-400 transition-colors"
             >
               Cancel
             </button>
