@@ -33,6 +33,10 @@ export default function MatchPage() {
     return () => ctx.revert();
   }, [router]);
 
+  const handleCancel = () => {
+    router.push("/landing");
+  };
+
   useEffect(() => {
     const timer = setInterval(() => {
       setSeconds((s) => s + 1);
@@ -67,7 +71,7 @@ export default function MatchPage() {
       <Navbar />
 
       <main className="mx-auto flex min-h-screen max-w-3xl flex-col items-center justify-center px-4 pt-20 pb-16 sm:px-6">
-        <div className="flex flex-col items-center gap-8 text-center">
+        <div className="flex flex-col items-center gap-8 text-center w-full">
        {/*}  <Loader />*/}
 
           <div className="match-copy space-y-4">
@@ -84,8 +88,14 @@ export default function MatchPage() {
             <p className="max-w-md text-sm leading-relaxed text-zinc-400">
               Good conversations take a moment.
             </p>
-
-            
+            <div className="mt-4">
+              <button
+                onClick={handleCancel}
+                className="text-[10px] uppercase tracking-widest text-amber-100 hover:text-amber-200 transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
       </main>
