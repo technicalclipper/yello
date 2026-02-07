@@ -10,6 +10,7 @@ import gsap from "gsap";
 import { OutlineButton } from "./OutlineButton";
 import { Sheet, SheetContent, SheetTrigger } from "./sheet";
 import  ProfileBadgePanel  from "@/components/ProfileBadgePanel";
+import { useWallet } from "@/hooks/useWallet";
 
 export type NavbarProps = {
   sessionTime?: string;
@@ -20,6 +21,7 @@ export function Navbar({ sessionTime, balance }: NavbarProps) {
   const pathname = usePathname();
   const isLandingPage = pathname === "/landing";
   const isCallPage = pathname === "/call";
+  const { address, isConnected, connectWallet, disconnectWallet, isWrongNetwork } = useWallet();
 
   const avatarRef = React.useRef<HTMLButtonElement>(null);
 
@@ -86,9 +88,29 @@ export function Navbar({ sessionTime, balance }: NavbarProps) {
               </SheetContent>
             </Sheet>
 
-            <OutlineButton className="cursor-target text-xs uppercase tracking-[0.22em] text-zinc-100/90 hover:text-amber-100">
-              Connect Wallet
-            </OutlineButton>
+            {isConnected ? (
+              <div className="flex items-center gap-3">
+                {isWrongNetwork && (
+                  <span className="text-xs text-rose-400">Wrong Network</span>
+                )}
+                <span className="text-xs text-zinc-400 font-mono">
+                  {address?.slice(0, 6)}...{address?.slice(-4)}
+                </span>
+                <OutlineButton
+                  onClick={disconnectWallet}
+                  className="cursor-target text-xs uppercase tracking-[0.22em] text-zinc-100/90 hover:text-amber-100"
+                >
+                  Disconnect
+                </OutlineButton>
+              </div>
+            ) : (
+              <OutlineButton
+                onClick={connectWallet}
+                className="cursor-target text-xs uppercase tracking-[0.22em] text-zinc-100/90 hover:text-amber-100"
+              >
+                Connect Wallet
+              </OutlineButton>
+            )}
           </div>
         )}
       </div>
